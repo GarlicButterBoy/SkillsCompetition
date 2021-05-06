@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using TeamsLibrary;
 
 namespace NickSturchFlint_PartB_Application
 {
     class Program
     {
-        //Declare a Global List to store Teams
+        //Declare a Global List to store Teams and Team Members
+        private static List<Team> teams = new List<Team>();
+        private static List<TeamMember> players = new List<TeamMember>();
 
         static void Main(string[] args)
         {
@@ -157,6 +162,63 @@ namespace NickSturchFlint_PartB_Application
             Console.WriteLine("Thank you for using Monster Hunter Time Trials, See You Again!!");
             Console.ReadKey();
             Environment.Exit(0); //Close the program with a return code of 0
+        }
+
+        public static void ReadTeamFile()
+        {
+            //Read the File(s)
+            StreamReader teamFile = new StreamReader(@"../../../Resources/teams.dat");
+            string line;
+
+            //reads each line of the file
+            while ((line = teamFile.ReadLine()) != null)
+            {
+                //use a delimiter to split lines into relevant data
+                string[] columns = line.Split(',');
+
+                try
+                {
+                    int ID = int.Parse(columns[0]);
+                    string name = columns[1];
+                    int region = int.Parse(columns[2]);
+
+                    
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+
+        }
+
+        public static void ReadMemberFile()
+        {
+            //Read the File(s)
+            StreamReader memberFile = new StreamReader(@"../../../Resources/members.dat");
+            string line;
+
+            //reads each line of the file
+            while ((line = memberFile.ReadLine()) != null)
+            {
+                //use a delimiter to split lines into relevant data
+                string[] columns = line.Split(',');
+
+                try
+                {
+                    int ID = int.Parse(columns[0]);
+                    string name = columns[1];
+                    int position = int.Parse(columns[2]);
+                    int team = int.Parse(columns[3]);
+
+
+                    players.Add(new TeamMember(ID, name, position, team));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
     }
 }

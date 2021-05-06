@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "cMVZ902Di4dnHGrx4UQEY5chCpRL0WD/3ScCNJi/Rdbj7Zdka6XIBAjqwcFr+jVFTQiW/6z6ebghcUsiiRTp9A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Nick\\Desktop\\Skills Ontario Competition\\NickSturchFlint_PartB_Application\\TeamsLibrary\\TeamsLibrary.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nick\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\Nick\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
