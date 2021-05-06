@@ -13,6 +13,8 @@ namespace NickSturchFlint_PartB_Application
 
         static void Main(string[] args)
         {
+            ReadMemberFile();
+
             bool showMenu = true; 
             while (showMenu)
             {
@@ -32,10 +34,10 @@ namespace NickSturchFlint_PartB_Application
             Console.Clear();
 
             //Add an if statement to check that the global list has any values
-            //if (teamList.Count > 1)
-            //{
-            //    ReadFile();
-            //}
+            if (players.Count < 1)
+            {
+                
+            }
 
             //Display Main Menu
             Console.Write("\n--------------------------------------------------------\n");
@@ -112,13 +114,13 @@ namespace NickSturchFlint_PartB_Application
             switch (Console.ReadLine())
             {
                 case "1":
-                    //AddTeamMember();
+                    AddTeamMember();
                     return true;
                 case "2":
-                    //DisplayAllMembers();
+                    DisplayAllMembers();
                     return true;
                 case "3":
-                    //DeleteTeamMember();
+                    DeleteTeamMember();
                     return true;
                 case "0":
                     MainMenu();
@@ -128,6 +130,8 @@ namespace NickSturchFlint_PartB_Application
                     return true;
             }
         }
+
+        
 
         public static bool TournamentMenu()
         {
@@ -217,6 +221,258 @@ namespace NickSturchFlint_PartB_Application
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
+                }
+            }
+
+            memberFile.Close();
+        }
+
+        public static void AddTeamMember()
+        {
+            Console.WriteLine("Add New Team Member Selected: \n");
+
+            bool flag = true; //used for do/while
+            string errors = "Something went wrong, please try again...";
+
+            int id = 0;
+            string name = "";
+            int position = 1;
+            int teamID = 0;
+
+            do
+            {
+                //if there are any errors
+                if (!flag)
+                {
+                    Console.Clear();
+                    Console.WriteLine(errors);
+                    flag = true;
+                }
+
+                Console.WriteLine("Please Enter a 4 Digit ID Number: ");
+                try
+                {
+                    id = int.Parse(Console.ReadLine());
+
+                    if (id < 1000 || id > 9999)
+                    {
+                        flag = false;
+                        errors += "\nPlayer ID must be between 1000 and 9999";
+                    }
+
+                    foreach (TeamMember player in players)
+                    {
+                        if (player.GetID() == id)
+                        {
+                            flag = false;
+                            errors += "\nPlayer ID already exists in our system";
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                Console.Clear();
+                Console.WriteLine("Please Enter Your Name/Username: ");
+                try
+                {
+                    name = Console.ReadLine();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                Console.Clear();
+                Console.WriteLine("Please Enter a 4 Digit Team ID: ");
+                try
+                {
+                    teamID = int.Parse(Console.ReadLine());
+
+                    if (teamID < 1000 || teamID > 9999)
+                    {
+                        flag = false;
+                        errors += "\nTeam ID must be between 1000 and 9999";
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                position = DisplayPositionOptions();
+
+                Console.WriteLine("Press Any Key To Continue...");
+                Console.ReadKey();
+                Console.Clear();
+
+
+            } while (!flag);
+
+            if (flag)
+            {
+                //Success, create the new player
+                players.Add(new TeamMember(id, name, position, teamID));
+            }
+
+            WriteToPlayerFile(); //method will add the updated list to the members.dat
+
+        }
+
+        /// <summary>
+        /// This method will display a menu from 1 to 14, each representing its own weapon type
+        /// </summary>
+        /// <returns>An int representing weapon type</returns>
+        public static int DisplayPositionOptions()
+        {
+            Console.Clear();
+            //Allow for user choice
+            bool flag = true;
+            int userChoice = 0;
+            do
+            {
+
+                Console.Write("\n-------------  WEAPON TYPES / TEAM POSITIONS  -------------\n");
+                Console.WriteLine("1) Greatsword\n");
+                Console.WriteLine("2) Longsword\n");
+                Console.WriteLine("3) Sword And Shield\n");
+                Console.WriteLine("4) Dual Blades\n");
+                Console.WriteLine("5) Charge Blade\n");
+                Console.WriteLine("6) Hammer\n");
+                Console.WriteLine("7) Hunting Horn\n");
+                Console.WriteLine("8) Switch Axe\n");
+                Console.WriteLine("9) Lance\n");
+                Console.WriteLine("10) Gun Lance\n");
+                Console.WriteLine("11) Insect Glaive\n");
+                Console.WriteLine("12) Bow\n");
+                Console.WriteLine("13) Light Bowgun\n");
+                Console.WriteLine("14) Heavy Bowgun\n");
+
+                try
+                {
+                    userChoice = int.Parse(Console.ReadLine());
+
+                    if (userChoice < 1 || userChoice > 14)
+                    {
+                        flag = false;
+                        Console.Clear();
+                        Console.WriteLine("Choice must be between 1 and 14");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+            } while (!flag);
+
+            return userChoice;
+        }
+
+        /// <summary>
+        /// This method will display a menu from 1 to 6 each representing its own region
+        /// </summary>
+        /// /// <returns>An int representing region</returns>
+        public static int DisplayRegionOptions()
+        {
+            return 0;
+        }
+
+        public static void DisplayAllMembers()
+        {
+            Console.Write("\nRow |  ID  | Player Name | Player Weapon  | Team ID |\n" +
+                            "----|------|-------------|----------------|---------|\n");
+
+            int counter = 0;
+            foreach (TeamMember player in players)
+            {
+                counter++;
+                Console.WriteLine(String.Format("{0, -4} ", counter) + player.TableString());
+            }
+
+            //Console.WriteLine("Press Any Key to Return to the Main Menu...");
+            Console.ReadKey();
+            MainMenu();
+        }
+
+        private static void DeleteTeamMember()
+        {
+
+            TeamMember player = new TeamMember();
+            int tempID;
+            string input = "";
+            bool flag = true;
+
+            do
+            {
+
+
+                //if there is any errors
+                if (!flag)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Could not find that player, try again...");
+                    flag = true;
+                }
+
+                Console.WriteLine("\nYou have chosen to delete a team member, please enter the player ID (1000-9999): ");
+                tempID = int.Parse(Console.ReadLine());
+
+                if (tempID < 1000 || tempID > 9999)
+                {
+                    flag = false;
+                    Console.Write("\nPlease enter a valid ID");
+                }
+
+
+            } while (!flag);
+
+
+            foreach (TeamMember member in players)
+            {
+                if (member.GetID() == tempID)
+                {
+                    player = member;
+                }
+            }
+
+            //Player is found
+            if (player != new TeamMember())
+            {
+                Console.Clear();
+                Console.WriteLine("Player Found!");
+
+                Console.WriteLine(player.ToString());
+
+                while ((input != "y") && (input != "n"))
+                {
+                    Console.Write("\n\nAre you sure you want to delete this player? Press Y/N: ");
+                    input = Console.ReadLine();
+                }
+
+                switch (input)
+                {
+                    case "y":
+                        Console.WriteLine("Player with ID " + tempID + " has been deleted.");
+                        players.Remove(player);
+                        break;
+                    case "n":
+                        Console.WriteLine("No Player Deleted, returning to main menu");
+                        break;
+                }
+            }
+            WriteToPlayerFile();
+        }
+
+        public static void WriteToPlayerFile()
+        {
+            using (StreamWriter memberFile = new StreamWriter(@"../../../Resources/members.dat", false))
+            {
+                foreach (TeamMember player in players)
+                {
+                    memberFile.WriteLine(player.FileString());
                 }
             }
         }

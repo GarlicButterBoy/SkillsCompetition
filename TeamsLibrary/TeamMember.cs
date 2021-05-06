@@ -130,10 +130,15 @@ namespace TeamsLibrary
 
         public string FileString()
         {
-            string tempString = GetID().ToString() + "," + GetName() + "," + GetPosition() + "," + GetTeamID().ToString();
+            string tempString = GetID().ToString() + "," + GetName() + "," + memberPosition + "," + GetTeamID().ToString();
 
             return tempString; 
             
+        }
+
+        public string TableString()
+        {
+            return String.Format("{0, -6} {1, -13} {2, -18} {3}", memberID, memberName, GetPosition(), teamID);
         }
 
     }

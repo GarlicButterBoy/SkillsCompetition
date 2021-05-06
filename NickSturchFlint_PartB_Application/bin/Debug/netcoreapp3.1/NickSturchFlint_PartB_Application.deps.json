@@ -7,14 +7,27 @@
   "targets": {
     ".NETCoreApp,Version=v3.1": {
       "NickSturchFlint_PartB_Application/1.0.0": {
+        "dependencies": {
+          "TeamsLibrary": "1.0.0"
+        },
         "runtime": {
           "NickSturchFlint_PartB_Application.dll": {}
+        }
+      },
+      "TeamsLibrary/1.0.0": {
+        "runtime": {
+          "TeamsLibrary.dll": {}
         }
       }
     }
   },
   "libraries": {
     "NickSturchFlint_PartB_Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TeamsLibrary/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

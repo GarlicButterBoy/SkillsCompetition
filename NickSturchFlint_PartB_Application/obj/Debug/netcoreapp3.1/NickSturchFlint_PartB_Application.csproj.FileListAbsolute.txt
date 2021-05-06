@@ -11,3 +11,6 @@ C:\Users\Nick\Desktop\Skills Ontario Competition\NickSturchFlint_PartB_Applicati
 C:\Users\Nick\Desktop\Skills Ontario Competition\NickSturchFlint_PartB_Application\NickSturchFlint_PartB_Application\obj\Debug\netcoreapp3.1\NickSturchFlint_PartB_Application.dll
 C:\Users\Nick\Desktop\Skills Ontario Competition\NickSturchFlint_PartB_Application\NickSturchFlint_PartB_Application\obj\Debug\netcoreapp3.1\NickSturchFlint_PartB_Application.pdb
 C:\Users\Nick\Desktop\Skills Ontario Competition\NickSturchFlint_PartB_Application\NickSturchFlint_PartB_Application\obj\Debug\netcoreapp3.1\NickSturchFlint_PartB_Application.genruntimeconfig.cache
+C:\Users\Nick\Desktop\Skills Ontario Competition\NickSturchFlint_PartB_Application\NickSturchFlint_PartB_Application\bin\Debug\netcoreapp3.1\TeamsLibrary.dll
+C:\Users\Nick\Desktop\Skills Ontario Competition\NickSturchFlint_PartB_Application\NickSturchFlint_PartB_Application\bin\Debug\netcoreapp3.1\TeamsLibrary.pdb
+C:\Users\Nick\Desktop\Skills Ontario Competition\NickSturchFlint_PartB_Application\NickSturchFlint_PartB_Application\obj\Debug\netcoreapp3.1\NickSturchFlint_PartB_Application.csproj.CopyComplete
