@@ -14,6 +14,7 @@ namespace NickSturchFlint_PartB_Application
         static void Main(string[] args)
         {
             ReadMemberFile();
+            ReadTeamFile();
 
             bool showMenu = true; 
             while (showMenu)
@@ -33,11 +34,7 @@ namespace NickSturchFlint_PartB_Application
         {
             Console.Clear();
 
-            //Add an if statement to check that the global list has any values
-            if (players.Count < 1)
-            {
-                
-            }
+            
 
             //Display Main Menu
             Console.Write("\n--------------------------------------------------------\n");
@@ -82,10 +79,10 @@ namespace NickSturchFlint_PartB_Application
             switch (Console.ReadLine())
             {
                 case "1":
-                    //AddTeam();
+                    AddTeam();
                     return true;
                 case "2":
-                    //DisplayAllTeams();
+                    DisplayAllTeams();
                     return true;
                 case "3":
                     //DeleteTeam();
@@ -97,6 +94,96 @@ namespace NickSturchFlint_PartB_Application
                     Console.WriteLine("Please select a valid option of 1, 2, 3, or 0 to leave.");
                     return true;
             }
+        }
+
+        private static void DisplayAllTeams()
+        {
+            Console.WriteLine("All Teams Currently Registered: \n\n");
+
+            
+            foreach (Team team in teams)
+            {
+                Console.WriteLine("\n" + team.ToString());
+            }
+
+            Console.ReadKey();
+            MainMenu();
+        }
+
+        private static void AddTeam()
+        {
+            Console.WriteLine("Add New Team Selected: \n");
+
+            bool flag = true; //used for do/while
+            string errors = "Something went wrong, please try again...";
+
+            int id = 0;
+            string name = "";
+            int region = 1;
+            List<TeamMember> teamPlayers = new List<TeamMember>();
+
+            do
+            {
+                //if there are any errors
+                if (!flag)
+                {
+                    Console.Clear();
+                    Console.WriteLine(errors);
+                    flag = true;
+                }
+
+                Console.WriteLine("Please Enter a 4 Digit Team ID Number: ");
+                try
+                {
+                    id = int.Parse(Console.ReadLine());
+
+                    if (id < 1000 || id > 9999)
+                    {
+                        flag = false;
+                        errors += "\nPlayer ID must be between 1000 and 9999";
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                Console.Clear();
+                Console.WriteLine("Please Enter Your Name/Username: ");
+                try
+                {
+                    name = Console.ReadLine();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                foreach (TeamMember player in players)
+                {
+                    if (player.GetTeamID() == id)
+                    {
+                        teamPlayers.Add(player);
+                    }
+                }
+
+                Console.Clear();
+                region = DisplayRegionOptions();
+
+                Console.WriteLine("Press Any Key To Continue...");
+                Console.ReadKey();
+                Console.Clear();
+
+
+            } while (!flag);
+
+            if (flag)
+            {
+                //Success, create the new player
+                teams.Add(new Team(id, name, region, teamPlayers));
+            }
+
+            WriteToTeamFile();
         }
 
         public static bool TeamMembersMenu()
@@ -173,7 +260,7 @@ namespace NickSturchFlint_PartB_Application
             //Read the File(s)
             StreamReader teamFile = new StreamReader(@"../../../Resources/teams.dat");
             string line;
-
+            List<TeamMember> teamMembers = new List<TeamMember>();
             //reads each line of the file
             while ((line = teamFile.ReadLine()) != null)
             {
@@ -182,11 +269,27 @@ namespace NickSturchFlint_PartB_Application
 
                 try
                 {
-                    int ID = int.Parse(columns[0]);
-                    string name = columns[1];
-                    int region = int.Parse(columns[2]);
+                    int counter = 0;
 
-                    
+                    int ID = int.Parse(columns[counter]);
+                    counter++;
+
+                    string name = columns[counter];
+                    counter++;
+
+                    int region = int.Parse(columns[counter]);
+                    counter++;
+
+                    //create the list of team members
+                    foreach (TeamMember player in players)
+                    {
+                        if (player.GetID() == int.Parse(columns[counter]))
+                        {
+                            teamMembers.Add(player);
+                        }
+                        counter++;
+                    }
+                    teams.Add(new Team(ID, name, region, teamMembers));
                 }
                 catch (Exception e)
                 {
@@ -377,7 +480,39 @@ namespace NickSturchFlint_PartB_Application
         /// /// <returns>An int representing region</returns>
         public static int DisplayRegionOptions()
         {
-            return 0;
+            Console.Clear();
+            //Allow for user choice
+            bool flag = true;
+            int userChoice = 0;
+            do
+            {
+                Console.Write("\n-------------  REGIONS  -------------\n");
+                Console.WriteLine("1) North America\n");
+                Console.WriteLine("2) South America\n");
+                Console.WriteLine("3) Europe\n");
+                Console.WriteLine("4) Asia\n");
+                Console.WriteLine("5) Africa\n");
+                Console.WriteLine("6) Oceania\n");
+
+                try
+                {
+                    userChoice = int.Parse(Console.ReadLine());
+
+                    if (userChoice < 1 || userChoice > 6)
+                    {
+                        flag = false;
+                        Console.Clear();
+                        Console.WriteLine("Choice must be between 1 and 6");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+            } while (!flag);
+
+            return userChoice;
         }
 
         public static void DisplayAllMembers()
@@ -473,6 +608,17 @@ namespace NickSturchFlint_PartB_Application
                 foreach (TeamMember player in players)
                 {
                     memberFile.WriteLine(player.FileString());
+                }
+            }
+        }
+
+        public static void WriteToTeamFile()
+        {
+            using (StreamWriter memberFile = new StreamWriter(@"../../../Resources/teams.dat", false))
+            {
+                foreach (Team team in teams)
+                {
+                    memberFile.WriteLine(team.FileString());
                 }
             }
         }
